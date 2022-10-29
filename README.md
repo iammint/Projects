@@ -1,2 +1,2 @@
 # Projects
-My practice demos
+My practice projects

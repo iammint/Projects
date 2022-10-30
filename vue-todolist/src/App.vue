@@ -66,6 +66,8 @@
             <button class="delete" @click="removeTodo(todo)">Delete</button>
           </div>
         </div>
+
+        <h3 class="title">DONE: {{ todo_done }} / TOTAL: {{ todo_total }}</h3>
       </div>
     </section>
   </main>
@@ -85,6 +87,12 @@ export default {
     todos_asc() {
       let todos_copy = Array.from(this.todos)
       return todos_copy.sort((a, b) => a.createdAt - b.createdAt)
+    },
+    todo_total() {
+      return this.todos.length
+    },
+    todo_done() {
+      return this.todos.filter((t) => t.done).length
     },
   },
   methods: {

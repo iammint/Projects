@@ -1,0 +1,24 @@
+.clearfix::before,
+.clearfix::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+body {
+  font: 14px/1.5 Helvetica Neue, Helvetica, Arial, Microsoft Yahei,
+    Hiragino Sans GB, Heiti SC, WenQuanYi Micro Hei, sans-serif;
+  color: #333;
+  /* 防止框拉的过小时浏览器布局打乱 */
+  min-width: 1226px;
+}
+/* 由于四大块的内容宽度都一样 且均居中 所以设置一个宽度类
+*/
+.w {
+  width: 1226px;
+  margin: 0 auto;
+}
+
+/* 去除所有a的下划线 */
+a:link {
+  text-decoration: none !important;
+}

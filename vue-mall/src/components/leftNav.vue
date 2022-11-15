@@ -1,183 +1,223 @@
 <template>
   <div>
-    <div class="nav-wrapper clearfix">
-      <ul class="nav clearfix">
-        <li class="empty snd">
-          <a href="JavaScript:;"></a>
-          <!-- 创建左侧导航菜单 -->
-          <ul class="left-menu">
-            <li class="left-li">
-              <a href="JavaScript:;"
-                >手机
-                <i class="fas fa-angle-right"></i>
-              </a>
-            </li>
-
-            <li class="left-li">
-              <a href="JavaScript:;"
-                >电视
-                <i class="fas fa-angle-right"></i>
-              </a>
-            </li>
-
-            <li class="left-li">
-              <a href="JavaScript:;"
-                >笔记本 平板
-                <i class="fas fa-angle-right"></i>
-              </a>
-            </li>
-
-            <li class="left-li">
-              <a href="JavaScript:;"
-                >家电
-                <i class="fas fa-angle-right"></i>
-              </a>
-            </li>
-
-            <li class="left-li">
-              <a href="JavaScript:;"
-                >出行 穿戴
-                <i class="fas fa-angle-right"></i>
-              </a>
-            </li>
-
-            <li class="left-li">
-              <a href="JavaScript:;"
-                >智能 路由器
-                <i class="fas fa-angle-right"></i>
-              </a>
-            </li>
-
-            <li class="left-li">
-              <a href="JavaScript:;"
-                >电源 配件
-                <i class="fas fa-angle-right"></i>
-              </a>
-            </li>
-
-            <li class="left-li">
-              <a href="JavaScript:;"
-                >健康 儿童
-                <i class="fas fa-angle-right"></i>
-              </a>
-            </li>
-
-            <li class="left-li">
-              <a href="JavaScript:;"
-                >耳机 音响
-                <i class="fas fa-angle-right"></i>
-              </a>
-            </li>
-
-            <li class="left-li">
-              <a href="JavaScript:;"
-                >生活 箱包
-                <i class="fas fa-angle-right"></i>
-              </a>
-            </li>
-          </ul>
-        </li>
-      </ul>
+    <div class="type-nav">
+      <div class="container">
+        <h2 class="all">全部商品分类</h2>
+        <nav class="nav">
+          <a href="###">服装城</a>
+          <a href="###">美妆馆</a>
+          <a href="###">尚品汇超市</a>
+          <a href="###">全球购</a>
+          <a href="###">闪购</a>
+          <a href="###">团购</a>
+          <a href="###">有趣</a>
+          <a href="###">秒杀</a>
+        </nav>
+        <div class="sort">
+          <div class="all-sort-list2">
+            <div
+              class="item"
+              v-for="(ctg, idx) in category"
+              :key="ctg.categoryId"
+            >
+              <h3
+                @mouseenter="changeIdx(idx)"
+                :class="{ cur: currentIdx === idx }"
+                @mouseleave="byePurple"
+              >
+                <a href="">{{ ctg.categoryName }}</a>
+              </h3>
+              <div
+                class="item-list clearfix"
+                :style="{ display: currentIdx == idx ? 'block' : 'none' }"
+              >
+                <div class="subitem">
+                  <dl
+                    class="fore"
+                    v-for="ctg1 in ctg.categoryChild"
+                    :key="ctg1.categoryId"
+                  >
+                    <dt>
+                      <a href="">{{ ctg1.categoryName }}</a>
+                    </dt>
+                    <dd>
+                      <em
+                        v-for="ctg2 in ctg1.categoryChild"
+                        :key="ctg2.categoryId"
+                      >
+                        <a href="">{{ ctg2.categoryName }}</a>
+                      </em>
+                    </dd>
+                  </dl>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-export default {}
+import { mapState } from "vuex"
+import _ from "lodash"
+export default {
+  data() {
+    return {
+      currentIdx: -1,
+    }
+  },
+  mounted() {
+    // 挂载完毕vuex发送请求，获取数据储存在store中
+    this.$store.dispatch("leftNav/categoryList")
+  },
+  computed: {
+    ...mapState("leftNav", ["category"]),
+  },
+  methods: {
+    // 通过JS实现hover效果，防止用户过快操作，需要节流
+    // changeIdx(idx) {
+    //   this.currentIdx = idx
+    // },
+    changeIdx: _.throttle(function (idx) {
+      this.currentIdx = idx
+    }, 50),
+    byePurple() {
+      this.currentIdx = -1
+    },
+  },
+}
 </script>
 
-<style scoped>
-/* 设置左侧菜单left-menu的样式 */
-.left-menu {
-  position: absolute;
-  z-index: 999;
-  /* 位置应该以空list为相对定位 */
-  width: 234px;
-  height: 420px;
-  background-color: rgba(105, 101, 101, 0.6);
-  padding: 20px 0;
-}
-.nav .empty {
-  position: relative;
-}
-.left-menu .left-li {
-  display: block;
-  padding-left: 30px;
-  height: 42px;
-  line-height: 42px;
-}
-.left-menu .left-li a {
-  color: #fff;
-  display: block;
-}
-.left-menu .left-li i {
-  float: right;
-  margin-right: 20px;
-  color: rgba(225, 225, 225, 1);
-  line-height: 40px;
-}
-.left-menu .left-li:hover {
-  background-color: #ff6700 !important;
-}
+<style lang="less" scoped>
+.type-nav {
+  border-bottom: 2px solid rgb(109, 111, 195);
 
-/* 设置商品下拉框 */
-.nav-wrapper .goods-info {
-  width: 100%;
-  /* height: 228px; */
-  height: 0;
-  /* overflow: hidden; */
-  background-color: #fff;
-  /* 由于下拉框的宽度是整个视窗的100%，所以应该将大容器header-wrapper开启相对定位 */
-  position: absolute;
-  z-index: 9999;
-  left: 0;
-  top: 100px;
-}
-.nav .show-goods:hover ~ .goods-info {
-  transition: height 0.3s;
-  height: 228px;
-  border-top: 1px solid rgb(224, 224, 224);
-  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.3);
-}
+  .container {
+    width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    position: relative;
 
-/* 设置搜索框样式 */
-.search-wrapper {
-  width: 296px;
-  height: 50px;
-  float: left;
-  margin-top: 25px;
-  border: 1px solid rgb(224, 224, 224);
-}
+    .all {
+      width: 210px;
+      height: 45px;
+      background-color: rgb(109, 111, 195);
+      line-height: 45px;
+      text-align: center;
+      color: #fff;
+      font-size: 14px;
+      font-weight: bold;
+    }
 
-/* 去除搜索框和图标之间的缝隙 */
-.search-wrapper .search-inp {
-  float: left;
-  padding: 0;
-  border: 0;
-  height: 50px;
-  width: 242px;
-  font-size: 16px;
-  /* 将默认轮廓线去掉 */
-  outline: none;
-}
-.search-wrapper .search-btn {
-  float: left;
-  padding: 0 6px;
-  border: 0;
-  height: 50px;
-  width: 54px;
-  /* border-left: 1px solid rgb(224, 224, 224); */
-  outline: 1px solid rgb(224, 224, 224);
-  background-color: #fff;
-}
-.search-wrapper .search-btn i {
-  font-size: 18px;
-  color: #616161;
-}
+    .nav {
+      a {
+        height: 45px;
+        margin: 0 22px;
+        line-height: 45px;
+        font-size: 16px;
+        color: #333;
+      }
+    }
 
-/* 设置input获取焦点之后的样式 */
-.search-wrapper .search-inp:focus,
-.search-wrapper .search-inp:focus + .search-btn {
-  outline: 1px solid #ff6700;
+    .sort {
+      position: absolute;
+      left: 0;
+      top: 45px;
+      width: 210px;
+      height: 461px;
+      position: absolute;
+      background: #fafafa;
+      z-index: 999;
+
+      .all-sort-list2 {
+        .item {
+          h3 {
+            line-height: 30px;
+            font-size: 14px;
+            font-weight: 400;
+            overflow: hidden;
+            padding: 0 20px;
+            margin: 0;
+
+            a {
+              color: #333;
+            }
+            &.cur {
+              background: rgb(186, 187, 238);
+            }
+          }
+
+          .item-list {
+            display: none;
+            position: absolute;
+            width: 734px;
+            min-height: 460px;
+            background: #f7f7f7;
+            left: 210px;
+            border: 1px solid #ddd;
+            top: 0;
+            z-index: 9999 !important;
+
+            .subitem {
+              float: left;
+              width: 650px;
+              padding: 0 4px 0 8px;
+
+              dl {
+                border-top: 1px solid #eee;
+                padding: 6px 0;
+                overflow: hidden;
+                zoom: 1;
+
+                &.fore {
+                  border-top: 0;
+                }
+
+                dt {
+                  float: left;
+                  width: 54px;
+                  line-height: 22px;
+                  text-align: right;
+                  padding: 3px 6px 0 0;
+                  font-weight: 700;
+                }
+
+                dd {
+                  float: left;
+                  width: 415px;
+                  padding: 3px 0 0;
+                  overflow: hidden;
+
+                  em {
+                    float: left;
+                    height: 14px;
+                    line-height: 14px;
+                    padding: 0 8px;
+                    margin-top: 5px;
+                    border-left: 1px solid #ccc;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    //过渡动画的样式
+    //过渡动画开始状态（进入）
+    .sort-enter {
+      height: 0px;
+    }
+    // 过渡动画结束状态（进入）
+    .sort-enter-to {
+      height: 461px;
+    }
+    // 定义动画时间、速率
+    .sort-enter-active {
+      transition: all 0.5s linear;
+    }
+  }
 }
 </style>

@@ -4,7 +4,9 @@
       <div class="topbar clearfix w">
         <!-- 左侧导航 -->
         <ul class="service">
-          <li><a href="JavaScript:;">小米商城</a></li>
+          <li>
+            <router-link to="/home">首页</router-link>
+          </li>
           <li class="line">|</li>
 
           <li><a href="JavaScript:;">MIUI</a></li>
@@ -84,59 +86,6 @@
         </ul>
       </div>
     </div>
-    <div>
-      <!-- 第二个横着的导航 -->
-      <div class="header-wrapper">
-        <div class="header w">
-          <!-- logo一般放在h1里 -->
-          <h1 class="logo" title="小米商城">
-            <!-- 点击 -->
-            <router-link to="/"
-              ><img src="@/assets/img/logo小米.png" alt="Xiaomi"
-            /></router-link>
-          </h1>
-
-          <div class="nav-wrapper clearfix">
-            <ul class="nav clearfix">
-              <li class="show-goods snd">
-                <a href="JavaScript:;" class="sndA">Xiaomi手机</a>
-              </li>
-              <li class="show-goods snd">
-                <a href="JavaScript:;" class="sndA">Redmi 红米</a>
-              </li>
-              <li class="show-goods snd">
-                <a href="JavaScript:;" class="sndA">电视</a>
-              </li>
-              <li class="show-goods snd">
-                <a href="JavaScript:;" class="sndA">笔记本</a>
-              </li>
-              <li class="show-goods snd">
-                <a href="JavaScript:;" class="sndA">平板</a>
-              </li>
-              <li class="show-goods snd">
-                <a href="JavaScript:;" class="sndA">家电</a>
-              </li>
-              <li class="show-goods snd">
-                <a href="JavaScript:;" class="sndA">路由器</a>
-              </li>
-              <li class="snd"><a href="JavaScript:;" class="sndA">服务</a></li>
-              <li class="snd"><a href="JavaScript:;" class="sndA">社区</a></li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- 搜索框 -->
-        <div class="search-wrapper">
-          <form action="#" class="search">
-            <input type="search" class="search-inp" v-model="keyword" />
-            <!-- 由于不是a超链接，因此需要编程式导航路由 -->
-            <button class="search-btn" @click="search">
-              <i class="fas fa-search"></i>
-            </button>
-          </form>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -164,7 +113,6 @@ export default {
 <style scoped>
 /* 最好根据结构顺序来写，先设置上方导航条容器的背景和宽度 */
 .topbar-wrapper {
-  width: 100%;
   background-color: #333;
   line-height: 40px;
   height: 40px;
@@ -369,41 +317,6 @@ hover要绑定给整个ul
 }
 .nav-wrapper .nav .sndA:hover {
   color: #ff6700 !important;
-}
-
-/* 设置左侧菜单left-menu的样式 */
-.left-menu {
-  position: absolute;
-  z-index: 999;
-  top: 88px;
-  left: -80px;
-  /* 位置应该以空list为相对定位 */
-  width: 234px;
-  height: 420px;
-  background-color: rgba(105, 101, 101, 0.6);
-  padding: 20px 0;
-}
-.nav .empty {
-  position: relative;
-}
-.left-menu .left-li {
-  display: block;
-  padding-left: 30px;
-  height: 42px;
-  line-height: 42px;
-}
-.left-menu .left-li a {
-  color: #fff;
-  display: block;
-}
-.left-menu .left-li i {
-  float: right;
-  margin-right: 20px;
-  color: rgba(225, 225, 225, 1);
-  line-height: 40px;
-}
-.left-menu .left-li:hover {
-  background-color: #ff6700 !important;
 }
 
 /* 设置商品下拉框 */

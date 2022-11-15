@@ -1,15 +1,15 @@
 <template>
-    <div>
-        Home
-    </div>
+  <div><leftNav></leftNav></div>
 </template>
 
 <script>
-    export default {
-        name: "home",
-    }
+import leftNav from "../components/leftNav.vue"
+export default {
+  name: "home",
+  components: {
+    leftNav,
+  },
+}
 </script>
 
-<style scoped>
-
-</style>
+<style lang="scss" scoped></style>

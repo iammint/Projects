@@ -1,7 +1,7 @@
 import { createApp } from "vue"
 import App from "./App.vue"
 
-// 引入css样式和图标
+// 引入css样式和icon图标
 import "./assets/css/reset.css"
 import "./assets/css/base.css"
 import "./assets/fa/FontAwsome/css/all.css"
@@ -9,7 +9,10 @@ import "./assets/fa/FontAwsome/css/all.css"
 // 引入路由
 import router from "./router/index"
 
+// 引入vuex的store仓库
+import store from "./store/index"
+
 const app = createApp(App)
 
-app.use(router)
+app.use(router).use(store)
 app.mount("#app")

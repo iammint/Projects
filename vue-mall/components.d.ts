@@ -7,13 +7,14 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    ElAside: typeof import('element-plus/es')['ElAside']
-    ElButton: typeof import('element-plus/es')['ElButton']
+    Carousel: typeof import('./src/components/carousel.vue')['default']
+    ElCarousel: typeof import('element-plus/es')['ElCarousel']
+    ElCarouselItem: typeof import('element-plus/es')['ElCarouselItem']
     ElContainer: typeof import('element-plus/es')['ElContainer']
-    ElFoot: typeof import('element-plus/es')['ElFoot']
     ElFooter: typeof import('element-plus/es')['ElFooter']
     ElHeader: typeof import('element-plus/es')['ElHeader']
     ElMain: typeof import('element-plus/es')['ElMain']
+    HomeFooter: typeof import('./src/components/homeFooter.vue')['default']
     LeftNav: typeof import('./src/components/leftNav.vue')['default']
     MiLeftNav: typeof import('./src/components/MiLeftNav.vue')['default']
     MyFooter: typeof import('./src/components/myFooter.vue')['default']

@@ -4,9 +4,7 @@
       <div class="topbar clearfix w">
         <!-- 左侧导航 -->
         <ul class="service">
-          <li>
-            <router-link to="/home">首页</router-link>
-          </li>
+          <li><a href="JavaScript:;">商城</a></li>
           <li class="line">|</li>
 
           <li><a href="JavaScript:;">MIUI</a></li>
@@ -91,22 +89,11 @@
 
 <script>
 export default {
+  name: "myHeader",
   data() {
-    return {
-      keyword: "",
-    }
+    return {}
   },
-  methods: {
-    // 搜索框路由跳转
-    search() {
-      this.$router.push({
-        name: "search",
-        params: {
-          keyword: this.keyword,
-        },
-      })
-    },
-  },
+  methods: {},
 }
 </script>
 
@@ -337,46 +324,5 @@ hover要绑定给整个ul
   height: 228px;
   border-top: 1px solid rgb(224, 224, 224);
   box-shadow: 0 5px 5px rgba(0, 0, 0, 0.3);
-}
-
-/* 设置搜索框样式 */
-.search-wrapper {
-  width: 296px;
-  height: 50px;
-  float: left;
-  margin-top: 25px;
-  border: 1px solid rgb(224, 224, 224);
-}
-
-/* 去除搜索框和图标之间的缝隙 */
-.search-wrapper .search-inp {
-  float: left;
-  padding: 0;
-  border: 0;
-  height: 50px;
-  width: 242px;
-  font-size: 16px;
-  /* 将默认轮廓线去掉 */
-  outline: none;
-}
-.search-wrapper .search-btn {
-  float: left;
-  padding: 0 6px;
-  border: 0;
-  height: 50px;
-  width: 54px;
-  /* border-left: 1px solid rgb(224, 224, 224); */
-  outline: 1px solid rgb(224, 224, 224);
-  background-color: #fff;
-}
-.search-wrapper .search-btn i {
-  font-size: 18px;
-  color: #616161;
-}
-
-/* 设置input获取焦点之后的样式 */
-.search-wrapper .search-inp:focus,
-.search-wrapper .search-inp:focus + .search-btn {
-  outline: 1px solid #ff6700;
 }
 </style>

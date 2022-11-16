@@ -1,0 +1,22 @@
+[
+  {
+    "id": "1",
+    "imgUrl": "@/assets/img/Xiaomi1.jpeg"
+  },
+  {
+    "id": "2",
+    "imgUrl": "@/assets/img/Xiaomi1.webp"
+  },
+  {
+    "id": "3",
+    "imgUrl": "@/assets/img/Xiaomi3.webp"
+  },
+  {
+    "id": "4",
+    "imgUrl": "@/assets/img/Xiaomi4.webp"
+  },
+  {
+    "id": "5",
+    "imgUrl": "@/assets/img/Xiaomi5.webp"
+  }
+]

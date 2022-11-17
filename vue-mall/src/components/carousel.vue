@@ -2,8 +2,8 @@
   <div class="container">
     <div class="block text-center">
       <el-carousel height="509px">
-        <el-carousel-item v-for="item in 4" :key="item">
-          <h3 class="small justify-center" text="2xl">{{ item }}</h3>
+        <el-carousel-item v-for="item in images" :key="item.id">
+          <a href=""><img :src="item.imgUrl" alt="carousel" /></a>
         </el-carousel-item>
       </el-carousel>
     </div>
@@ -11,7 +11,13 @@
 </template>
 
 <script>
-export default {}
+import { mapState } from "vuex"
+
+export default {
+  computed: {
+    ...mapState("carousel", ["images"]),
+  },
+}
 </script>
 
 <style scoped>
@@ -19,19 +25,14 @@ export default {}
   width: 81.5%;
   float: right;
 }
-.el-carousel__item h3 {
-  color: #475669;
+.el-carousel__item a {
   opacity: 0.75;
   line-height: 150px;
   margin: 0;
   text-align: center;
-}
-
-.el-carousel__item:nth-child(2n) {
-  background-color: #99a9bf;
-}
-
-.el-carousel__item:nth-child(2n + 1) {
-  background-color: #d3dce6;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
 }
 </style>

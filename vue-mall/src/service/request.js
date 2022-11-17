@@ -5,6 +5,7 @@ import axios from "axios"
 import nProgress from "nprogress"
 import "../../node_modules/nprogress/nprogress.css"
 
+// 请求远程服务器的资源
 const request = axios.create({
   // 基础路径不用写域名地址，因为默认向本台机器发送请求，需要配置代理服务器
   baseURL: "/api",
@@ -30,4 +31,28 @@ request.interceptors.response.use(
   }
 )
 
-export default request
+// 请求本地mock的资源
+const mockRequest = axios.create({
+  // 是相对于src文件夹来说的
+  baseURL: "/mock",
+  timeout: 5000,
+})
+
+// 请求拦截器
+mockRequest.interceptors.request.use((config) => {
+  nProgress.start()
+  // config配置对象，有个属性很重要 —— headers
+  return config
+})
+
+// 响应拦截器
+mockRequest.interceptors.response.use(
+  (response) => {
+    nProgress.done()
+    return response.data
+  },
+  (error) => {
+    return Promise.reject(new Error("Failed"))
+  }
+)
+export { request, mockRequest }

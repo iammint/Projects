@@ -16,10 +16,10 @@ declare module '@vue/runtime-core' {
     ElMain: typeof import('element-plus/es')['ElMain']
     HomeFooter: typeof import('./src/components/homeFooter.vue')['default']
     LeftNav: typeof import('./src/components/leftNav.vue')['default']
-    MiLeftNav: typeof import('./src/components/MiLeftNav.vue')['default']
     MyFooter: typeof import('./src/components/myFooter.vue')['default']
     MyHeader: typeof import('./src/components/myHeader.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Test: typeof import('./src/components/test.vue')['default']
   }
 }

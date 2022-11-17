@@ -6,6 +6,12 @@ import "./assets/css/reset.css"
 import "./assets/css/base.css"
 import "./assets/fa/FontAwsome/css/all.css"
 
+// 引入mockjs数据，直接引入让其执行
+import "./mock/mockServe.js"
+
+// 引入swiper的样式
+import "swiper/css"
+
 // 引入路由
 import router from "./router/index"
 

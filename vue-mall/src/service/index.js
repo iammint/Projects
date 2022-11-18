@@ -13,5 +13,26 @@ export function getBaseCategoryList() {
 // Home轮播图
 export const getCarouselImg = () => mockRequest.get("/banner")
 
-// floor广告
+// Home中的floor广告
 export const getFloor = () => mockRequest.get("/floor")
+
+// 搜索页面商品详情/list  POST  必须带参数
+/*
+eg: {
+  "category3Id": "61",
+  "categoryName": "手机",
+  "keyword": "小米",
+  "order": "1:desc",
+  "pageNo": 1,
+  "pageSize": 10,
+  "props": ["1:1700-2799:价格", "2:6.65-6.74英寸:屏幕尺寸"],
+  "trademark": "4:小米"
+} 
+*/
+// 传递的参数至少是一个空对象
+export const getSearchInfo = (data) =>
+  request({
+    url: "/list",
+    methods: "POST",
+    data: data,
+  })

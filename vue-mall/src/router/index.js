@@ -3,7 +3,7 @@ import { createRouter, createWebHistory } from "vue-router"
 import Home from "../pages/myHome.vue"
 import Login from "../pages/myLogin.vue"
 import Register from "../pages/myRegister.vue"
-import Search from "../pages/mySearch.vue"
+import Search from "../pages/mySearch/index.vue"
 const router = createRouter({
   history: createWebHistory(),
   routes: [

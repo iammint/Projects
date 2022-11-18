@@ -15,10 +15,13 @@
 
 <script>
 import myHeader from "./components/myHeader.vue"
+// 虽然leftNav不是在所有页面都需要，但是在大部分页面需要，因此可以全局引入
+import leftNav from "./components/leftNav.vue"
 export default {
   name: "APP",
   components: {
     myHeader,
+    leftNav,
   },
   mounted() {
     // 只能写在App.vue里，不能写在main.js中，因为只有在组件里才能访问到this.$store

@@ -14,14 +14,12 @@
 </template>
 
 <script>
-import leftNav from "@/components/leftNav.vue"
 import carousel from "@/components/carousel.vue"
 import homeFooter from "@/components/homeFooter.vue"
-import test from "@/components/test.vue"
 import { mapState } from "vuex"
 export default {
   name: "Home",
-  components: { leftNav, carousel, homeFooter, test },
+  components: { carousel, homeFooter },
   computed: {
     ...mapState("floor", ["floorList"]),
   },

@@ -24,7 +24,9 @@ export default {
 .container {
   width: 81.5%;
   float: right;
+  
 }
+
 .el-carousel__item a {
   opacity: 0.75;
   line-height: 150px;

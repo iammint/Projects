@@ -13,7 +13,7 @@
         <form action="#" class="search">
           <input type="search" class="search-inp" v-model="keyWord" />
           <button class="search-btn" @click="search">
-            <i class="fas fa-search"></i>
+            <i class="fa-solid fa-magnifying-glass fa-search"></i>
           </button>
         </form>
       </div>

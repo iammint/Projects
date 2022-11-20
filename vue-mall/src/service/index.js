@@ -16,7 +16,7 @@ export const getCarouselImg = () => mockRequest.get("/banner")
 // Home中的floor广告
 export const getFloor = () => mockRequest.get("/floor")
 
-// 搜索页面商品详情/list  POST  必须带参数
+// 🥲这个接口用不了了。搜索页面商品详情/list  POST  必须带参数
 /*
 eg: {
   "category3Id": "61",

@@ -32,3 +32,7 @@
     2. 发请求
     3. Vuex
     4. 组件获取仓库数据，动态展示数据
+
+20. 选择商品类别带的是 query 参数，搜索框的关键字是 params 参数，在挂载 search 模块之前，可以用`Object.assign()`将传入的 query 和 params 进行整理，然后再`this.$store.dispatch( , this.searchParams)`
+21. 搜索参数一旦发生改变，就需要重新整理参数并且发送请求，重新挂载页面。搜索参数导致路径 path 发生改变，因此可以通过监听`$route`来判断用户是否进行重新搜索
+22. 带x的面包屑，根据选择的类别来显示

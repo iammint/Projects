@@ -12,10 +12,14 @@
             </li>
           </ul>
           <ul class="fl sui-tag">
-            <li class="with-x">手机</li>
-            <li class="with-x">iphone<i>×</i></li>
-            <li class="with-x">华为<i>×</i></li>
-            <li class="with-x">OPPO<i>×</i></li>
+            <li class="with-x" v-if="searchParams.categoryName">
+              {{ searchParams.categoryName }}
+              <i @click="deleteNameBread">x</i>
+            </li>
+            <li class="with-x" v-if="searchParams.keyword">
+              {{ searchParams.keyword }}
+              <i @click="deleteKeyBread">x</i>
+            </li>
           </ul>
         </div>
 
@@ -53,6 +57,44 @@
           <!-- 商品列表 -->
           <div class="goods-list">
             <ul class="yui3-g">
+              <!-- 后端API接口不能用 -->
+              <!-- <li class="yui3-u-1-5" v-for="good in goodsList" :key="good.id">
+                <div class="list-wrap">
+                  <div class="p-img">
+                    <a href="item.html" target="_blank"
+                      ><img :src="good.defaultImg"
+                    /></a>
+                  </div>
+                  <div class="price">
+                    <strong>
+                      <em>¥</em>
+                      <i> {{ good.price }}</i>
+                    </strong>
+                  </div>
+                  <div class="attr">
+                    <a
+                      target="_blank"
+                      href="item.html"
+                      title="促销信息，下单即赠送三个月CIBN视频会员卡！【小米电视新品4A 58 火爆预约中】"
+                      >{{ good.title }}</a
+                    >
+                  </div>
+                  <div class="commit">
+                    <i class="command">已有<span>2000</span>人评价</i>
+                  </div>
+                  <div class="operate">
+                    <a
+                      href="success-cart.html"
+                      target="_blank"
+                      class="sui-btn btn-bordered btn-danger"
+                      >加入购物车</a
+                    >
+                    <a href="javascript:void(0);" class="sui-btn btn-bordered"
+                      >收藏</a
+                    >
+                  </div>
+                </div>
+              </li> -->
               <li class="yui3-u-1-5">
                 <div class="list-wrap">
                   <div class="p-img">
@@ -465,15 +507,86 @@
 </template>
 
 <script>
+import { mapGetters, mapState } from "vuex"
 import searchSelector from "./SearchSelector/SearchSelector"
 export default {
   name: "search",
+  data() {
+    return {
+      searchParams: {
+        // 根据后端接口返回的数据来确定参数名称
+        category1Id: "",
+        category2Id: "",
+        category3Id: "",
+        categoryName: "",
+        // 搜索关键字
+        keyword: "",
+        // 商品属性的数组，比如手机64G，128G
+        props: [],
+        // 品牌
+        trademark: "",
+        // 排序方式
+        order: "",
+        // 用于分页器，表示当前处于第几页
+        pageNo: 1,
+        // 表示每页展示的数据的个数
+        pageSize: 4,
+      },
+
+      // 是否展示面包屑
+      showBread: true,
+    }
+  },
   components: {
     searchSelector,
   },
+  created() {
+    // 或者写在beforeUnmount()里
+    // 将带过来的query和params参数赋值给searchParams的属性
+    // 在发送请求之前将需要传递的参数整理好，服务器就会返回查询的数据
+    // Object.assign()合并对象
+    Object.assign(this.searchParams, this.$route.query, this.$route.params)
+    // query和params中有的属性会覆盖searchParams的属性
+  },
+  // 不能写在mounted里，因为这样只会发送一次请求
+  // 但是事实上只要参数发生改变，就要发送一次请求
   mounted() {
-    // 在search组件发请求
-    this.$store.dispatch("search/getInfo", {})
+    // 在search组件发请求，在mounted里只能发送一次
+    // this.$store.dispatch("search/getInfo", this.searchParams)
+  },
+  computed: {
+    ...mapGetters("search", ["goodsList"]),
+    ...mapState("search", ["info"]),
+  },
+  methods: {
+    // searchParams一旦发生变化就要重新请求数据
+    getData() {
+      this.$store.dispatch("search/getInfo", this.searchParams)
+    },
+
+    // 删除面包屑
+    deleteNameBread() {
+      this.searchParams.categoryName = ""
+      // 清空之后页面不会改变，所以需要再次向服务器发送请求
+      this.getData()
+    },
+    deleteKeyBread() {
+      this.searchParams.keyword = ""
+      this.getData()
+    },
+  },
+  // 数据监听，监听组件属性的属性值的变化
+  watch: {
+    $route(newValue, oldValue) {
+      // 当数据发生改变时，先修改searchParams，再发送请求
+      Object.assign(this.searchParams, this.$route.query, this.$route.params)
+      this.getData()
+      // 每次请求完毕，清空响应的一二三级id，以便接收下一次请求
+      this.searchParams.category1Id = ""
+      this.searchParams.category2Id = ""
+      this.searchParams.category3Id = ""
+      // 分类的名字和关键字不用清理，因为每次都会赋予新的数据
+    },
   },
 }
 </script>

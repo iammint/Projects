@@ -11,9 +11,6 @@ import "./mock/mockServe.js"
 // 引入swiper的样式
 import "swiper/css"
 
-// import { getSearchInfo } from "./service"
-// console.log(getSearchInfo({ keyword: "小米" }))
-
 // 引入路由
 import router from "./router/index"
 

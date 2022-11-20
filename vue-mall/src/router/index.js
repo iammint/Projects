@@ -15,7 +15,7 @@ const router = createRouter({
     },
     {
       name: "search",
-      path: "/search/:keyWord?",
+      path: "/search/:keyword?",
       component: Search,
       meta: { showFooter: true },
     },

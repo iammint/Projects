@@ -11,7 +11,7 @@
       <!-- 搜索框 -->
       <div class="search-wrapper">
         <form action="#" class="search">
-          <input type="search" class="search-inp" v-model="keyWord" />
+          <input type="search" class="search-inp" v-model="keyword" />
           <button class="search-btn" @click="search">
             <i class="fa-solid fa-magnifying-glass fa-search"></i>
           </button>
@@ -106,7 +106,8 @@ export default {
       currentIdx: -1,
       show: true,
       // 搜索框内容
-      keyWord: "",
+      // 作为query/params的参数，后面要和API接口汇合，所以key名称必须一致
+      keyword: "",
     }
   },
   mounted() {
@@ -172,7 +173,7 @@ export default {
     search() {
       let location = {
         name: "search",
-        params: { keyWord: this.keyWord },
+        params: { keyword: this.keyword },
       }
       if (this.$route.query) {
         location.query = this.$route.query

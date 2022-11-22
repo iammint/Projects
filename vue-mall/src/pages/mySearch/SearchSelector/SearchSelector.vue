@@ -4,10 +4,12 @@
       <div class="fl key brand">品牌</div>
       <div class="value logos">
         <ul class="logo-list">
-          <!-- <li v-for="trademark in trademarkList" :key="trademark.tmId">
+          <!-- <li v-for="trademark in trademarkList" :key="trademark.tmId" @click="$emit('trademarkHandler', trademark.tmName)">
             {{ trademark.tmName }}
           </li> -->
-          <li>索尼（SONY）</li>
+          <!-- 点击品牌也会出现面包屑，重新发送请求 -->
+          <!-- 需要将相关数据传给父组件，在父组件发请求 -->
+          <li @click="$emit('trademarkHandler', '索尼')">索尼（SONY）</li>
           <li>TCL</li>
           <li>长虹（CHANGHONG）</li>
           <li>飞利浦（PHILIPS）</li>
@@ -174,6 +176,7 @@
 import { mapGetters } from "vuex"
 export default {
   name: "SearchSelector",
+  emits: ["trademarkHandler"],
   computed: {
     ...mapGetters("search", ["attrsList", "trademarkList"]),
   },

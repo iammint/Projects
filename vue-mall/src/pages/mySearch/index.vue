@@ -20,11 +20,15 @@
               {{ searchParams.keyword }}
               <i @click="deleteKeyBread">x</i>
             </li>
+            <li class="with-x" v-if="searchParams.trademark">
+              {{ searchParams.trademark }}
+              <i @click="deleteBrandBread">x</i>
+            </li>
           </ul>
         </div>
 
         <!--selector-->
-        <searchSelector></searchSelector>
+        <searchSelector @trademark-handler="getBrandData"></searchSelector>
 
         <!--details-->
         <div class="details clearfix">
@@ -532,9 +536,6 @@ export default {
         // 表示每页展示的数据的个数
         pageSize: 4,
       },
-
-      // 是否展示面包屑
-      showBread: true,
     }
   },
   components: {
@@ -555,7 +556,7 @@ export default {
     // this.$store.dispatch("search/getInfo", this.searchParams)
   },
   computed: {
-    ...mapGetters("search", ["goodsList"]),
+    // ...mapGetters("search", ["goodsList"]),
     ...mapState("search", ["info"]),
   },
   methods: {
@@ -563,15 +564,51 @@ export default {
     getData() {
       this.$store.dispatch("search/getInfo", this.searchParams)
     },
-
     // 删除面包屑
     deleteNameBread() {
-      this.searchParams.categoryName = ""
+      // 比设置为空字符串性能提升，undefined不会传参
+      // 设置为undefined就不会在页面渲染面包屑
+      this.searchParams.categoryName = undefined
+      this.searchParams.category1Id = undefined
+      this.searchParams.category2Id = undefined
+      this.searchParams.category3Id = undefined
       // 清空之后页面不会改变，所以需要再次向服务器发送请求
       this.getData()
+      // 地址栏需要更新，在本页面进行跳转
+      // 如果有params参数还需要继续带上
+      if (JSON.stringify(this.$route.params) == "{}") {
+        this.$router.push("/search")
+      } else {
+        this.$router.push({
+          name: "search",
+          params: this.$route.params,
+        })
+      }
     },
     deleteKeyBread() {
-      this.searchParams.keyword = ""
+      this.searchParams.keyword = undefined
+      // 清空之后页面不会改变，所以需要再次向服务器发送请求
+      this.getData()
+      // 清空搜索框内容
+      this.$store.state.leftNav.keyword = undefined
+      // 地址栏需要更新，在本页面进行跳转
+      // 如果有params参数还需要继续带上
+      // boolean({}) == true
+      if (JSON.stringify(this.$route.query) == "{}") {
+        this.$router.push("/search")
+      } else {
+        this.$router.push({
+          name: "search",
+          query: this.$route.query,
+        })
+      }
+    },
+    getBrandData(trademark) {
+      this.searchParams.trademark = trademark
+      this.getData()
+    },
+    deleteBrandBread() {
+      this.searchParams.trademark = undefined
       this.getData()
     },
   },

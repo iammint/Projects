@@ -4,6 +4,7 @@ export default {
   state() {
     return {
       category: [],
+      keyword: "",
     }
   },
   actions: {
@@ -18,6 +19,9 @@ export default {
   mutations: {
     categoryList(state, category) {
       state.category = category
+    },
+    updateKeyword(state, value) {
+      state.keyword = value
     },
   },
 }

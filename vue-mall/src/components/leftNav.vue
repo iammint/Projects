@@ -10,7 +10,7 @@
 
       <!-- 搜索框 -->
       <div class="search-wrapper">
-        <form action="#" class="search">
+        <form class="search">
           <input type="search" class="search-inp" v-model="keyword" />
           <button class="search-btn" @click="search">
             <i class="fa-solid fa-magnifying-glass fa-search"></i>
@@ -105,9 +105,6 @@ export default {
     return {
       currentIdx: -1,
       show: true,
-      // 搜索框内容
-      // 作为query/params的参数，后面要和API接口汇合，所以key名称必须一致
-      keyword: "",
     }
   },
   mounted() {
@@ -122,6 +119,17 @@ export default {
   },
   computed: {
     ...mapState("leftNav", ["category"]),
+    // keyword搜索框内容
+    // 作为query/params的参数，后面要和API接口汇合，所以key名称必须一致
+    keyword: {
+      get() {
+        // 获取leftNav的state
+        return this.$store.state.leftNav.keyword
+      },
+      set(value) {
+        this.$store.commit("leftNav/updateKeyword", value)
+      },
+    },
   },
   methods: {
     // 通过JS实现hover效果，防止用户过快操作，需要节流
@@ -156,10 +164,8 @@ export default {
           query.category2Id = category2id
         }
         location.query = query
-        // 如果搜索框有params参数，也要传递
-        if (this.$route.params) {
-          location.params = this.$route.params
-        }
+        // 不用if判断因为即使是空对象也会进入判断
+        location.params = this.$route.params
         this.$router.push(location)
       }
     },
@@ -170,15 +176,15 @@ export default {
     },
 
     // 搜索框路由跳转，如果已经有query参数，也要传递
-    search() {
-      let location = {
+    search(event) {
+      event.preventDefault()
+      this.$router.push({
         name: "search",
         params: { keyword: this.keyword },
-      }
-      if (this.$route.query) {
-        location.query = this.$route.query
-      }
-      this.$router.push(location)
+        query: this.$route.query,
+      })
+      // const href = this.$router.resolve(location).href
+      // window.open(href, "_blank")
     },
 
     // 进入search后鼠标移入需要show类别下拉，此处无需区分path

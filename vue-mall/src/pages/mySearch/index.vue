@@ -21,14 +21,27 @@
               <i @click="deleteKeyBread">x</i>
             </li>
             <li class="with-x" v-if="searchParams.trademark">
-              {{ searchParams.trademark }}
+              {{ searchParams.trademark.split(":")[1] }}
               <i @click="deleteBrandBread">x</i>
+            </li>
+            <li
+              class="with-x"
+              v-if="Object.keys(searchParams.props).length != 0"
+              v-for="(prop, index) in searchParams.props"
+              :key="prop.split(':')[0]"
+            >
+              <!-- 需要遍历数组，添加了多少元素就显示多少元素 -->
+              {{ prop.split(":")[1] }}
+              <i @click="deleteAttrBread(index)">x</i>
             </li>
           </ul>
         </div>
 
         <!--selector-->
-        <searchSelector @trademark-handler="getBrandData"></searchSelector>
+        <searchSelector
+          @trademark-handler="getBrandData"
+          @attr-info="getAttrInfo"
+        ></searchSelector>
 
         <!--details-->
         <div class="details clearfix">
@@ -36,23 +49,30 @@
             <div class="navbar-inner filter">
               <!-- 价格 -->
               <ul class="sui-nav">
-                <li class="active">
-                  <a href="#">综合</a>
+                <li :class="{ active: isOne }" @click="changeOrder(1)">
+                  <a
+                    >综合<i
+                      v-show="isOne"
+                      class="fa-solid"
+                      :class="{
+                        'fa-arrow-up': isAsc,
+                        'fa-arrow-down': isDesc,
+                      }"
+                    ></i
+                  ></a>
                 </li>
-                <li>
-                  <a href="#">销量</a>
-                </li>
-                <li>
-                  <a href="#">新品</a>
-                </li>
-                <li>
-                  <a href="#">评价</a>
-                </li>
-                <li>
-                  <a href="#">价格⬆</a>
-                </li>
-                <li>
-                  <a href="#">价格⬇</a>
+                <li :class="{ active: isTwo }" @click="changeOrder(2)">
+                  <a
+                    >价格
+                    <i
+                      v-show="isTwo"
+                      class="fa-solid"
+                      :class="{
+                        'fa-arrow-up': isAsc,
+                        'fa-arrow-down': isDesc,
+                      }"
+                    ></i
+                  ></a>
                 </li>
               </ul>
             </div>
@@ -525,12 +545,12 @@ export default {
         categoryName: "",
         // 搜索关键字
         keyword: "",
-        // 商品属性的数组，比如手机64G，128G
+        // 商品属性的数组，比如手机64G，128G ["属性id:属性值:属性名"]
         props: [],
         // 品牌
         trademark: "",
-        // 排序方式
-        order: "",
+        // 排序方式 "1: asc"/ "1: desc" / "2: asc" / "2: desc"
+        order: "1:desc",
         // 用于分页器，表示当前处于第几页
         pageNo: 1,
         // 表示每页展示的数据的个数
@@ -558,6 +578,20 @@ export default {
   computed: {
     // ...mapGetters("search", ["goodsList"]),
     ...mapState("search", ["info"]),
+
+    // 综合/价格 是否添加class类
+    isOne() {
+      return this.searchParams.order.includes(1)
+    },
+    isTwo() {
+      return this.searchParams.order.includes(2)
+    },
+    isDesc() {
+      return this.searchParams.order.includes("desc")
+    },
+    isAsc() {
+      return this.searchParams.order.includes("asc")
+    },
   },
   methods: {
     // searchParams一旦发生变化就要重新请求数据
@@ -609,6 +643,36 @@ export default {
     },
     deleteBrandBread() {
       this.searchParams.trademark = undefined
+      this.getData()
+    },
+    getAttrInfo(attr, attrValue) {
+      // 如果一直点同一个属性，数组会继续添加，会出现数组重复的现象
+      let prop = `${attr.attrId}:${attrValue}:${attr.attrName}`
+      if (!this.searchParams.props.includes(prop)) {
+        this.searchParams.props.push(prop)
+        this.getData()
+      }
+      // if (this.searchParams.props.indexOf(props) == -1) this.searchParams.props.push(prop)
+    },
+    deleteAttrBread(index) {
+      this.searchParams.props.splice(index, 1)
+      this.getData()
+    },
+
+    changeOrder(value) {
+      // 获取最初状态
+      let originFlag = this.searchParams.order.split(":")[0]
+      let originSort = this.searchParams.order.split(":")[1]
+      let newOrder = ""
+      // 将传进来的状态与最初做对比
+      if (originFlag == value) {
+        newOrder = `${originFlag}:${originSort == "desc" ? "asc" : "desc"}`
+      }
+      // 默认是降序
+      else {
+        newOrder = `${value}:desc`
+      }
+      this.searchParams.order = newOrder
       this.getData()
     },
   },

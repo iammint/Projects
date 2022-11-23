@@ -9,7 +9,7 @@
           </li> -->
           <!-- 点击品牌也会出现面包屑，重新发送请求 -->
           <!-- 需要将相关数据传给父组件，在父组件发请求 -->
-          <li @click="$emit('trademarkHandler', '索尼')">索尼（SONY）</li>
+          <li @click="$emit('trademarkHandler', '001: 索尼')">索尼（SONY）</li>
           <li>TCL</li>
           <li>长虹（CHANGHONG）</li>
           <li>飞利浦（PHILIPS）</li>
@@ -34,12 +34,12 @@
         <a href="javascript:void(0);">更多</a>
       </div>
     </div>
-    <!-- <div class="type-wrap" v-for="attr in attrsList" :key="attr.id">
+    <!-- <div class="type-wrap" v-for="attr in attrsList" :key="attr.attrId">
       <div class="fl key">{{ attr.attrName }}</div>
       <div class="fl value">
-        <ul class="type-list">
-          <li v-for="(attrValue, index) in attrValueList" :key="index">
-            <a>GSM（移动/联通2G）</a>
+        <ul class="type-list">                                                   ["属性id:属性值:属性名"]
+          <li v-for="(attrValue, index) in attrValueList" :key="index" @click="$emit('attrInfo', attr, attrValue)">
+            <a>{{ attrValue }}</a>
           </li>
         </ul>
       </div>
@@ -50,7 +50,16 @@
       <div class="fl value">
         <ul class="type-list">
           <li>
-            <a>GSM（移动/联通2G）</a>
+            <a
+              @click="
+                $emit(
+                  'attrInfo',
+                  { attrId: 483, attrName: '网络制式' },
+                  'GSM（移动/联通2G）'
+                )
+              "
+              >GSM（移动/联通2G）</a
+            >
           </li>
           <li>
             <a>电信2G</a>
@@ -88,7 +97,16 @@
       <div class="fl value">
         <ul class="type-list">
           <li>
-            <a>4.0-4.9英寸</a>
+            <a
+              @click="
+                $emit(
+                  'attrInfo',
+                  { attrId: 293, attrName: '显示屏尺寸' },
+                  '4.0-4.9英寸'
+                )
+              "
+              >4.0-4.9英寸</a
+            >
           </li>
           <li>
             <a>4.0-4.9英寸</a>
@@ -102,7 +120,16 @@
       <div class="fl value">
         <ul class="type-list">
           <li>
-            <a>1200万以上</a>
+            <a
+              @click="
+                $emit(
+                  'attrInfo',
+                  { attrId: 586, attrName: '摄像头尺寸' },
+                  '1200万以上'
+                )
+              "
+              >1200万以上</a
+            >
           </li>
           <li>
             <a>800-1199万</a>
@@ -176,9 +203,13 @@
 import { mapGetters } from "vuex"
 export default {
   name: "SearchSelector",
-  emits: ["trademarkHandler"],
+  emits: ["trademarkHandler", "attrInfo"],
   computed: {
     ...mapGetters("search", ["attrsList", "trademarkList"]),
+  },
+  methods: {
+    // ["属性id:属性值:属性名"]
+    attrInfo() {},
   },
 }
 </script>

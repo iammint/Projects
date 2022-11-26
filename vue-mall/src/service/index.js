@@ -6,7 +6,7 @@ export function getBaseCategoryList() {
   // 需要return让其他模块使用
   return request({
     url: "/product/getBaseCategoryList",
-    methods: "GET",
+    method: "GET",
   })
 }
 
@@ -33,6 +33,30 @@ eg: {
 export const getSearchInfo = (data) =>
   request({
     url: "/list",
-    methods: "POST",
+    method: "POST",
     data: data,
   })
+
+export const getVerificationCode = (number) =>
+  request({
+    url: `/user/passport/sendCode/${number}`,
+    method: "GET",
+  })
+
+// 注册
+export const getRegisterData = (data) => {
+  request({
+    url: "/user/passport/register",
+    data,
+    method: "POST",
+  })
+}
+
+// 登录
+export const getUserLogin = (data) => {
+  request({
+    url: "/user/passport/login",
+    data,
+    method: "POST",
+  })
+}

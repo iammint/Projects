@@ -1,11 +1,12 @@
-import { createRouter, createWebHistory } from "vue-router"
+import { createRouter, createWebHashHistory } from "vue-router"
 
 import Home from "../pages/myHome.vue"
-import Login from "../pages/myLogin.vue"
-import Register from "../pages/myRegister.vue"
+import Login from "../pages/Login/index.vue"
+import Register from "../pages/Register/index.vue"
 import Search from "../pages/mySearch/index.vue"
+import Detail from "../pages/myDetail/index.vue"
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(),
   routes: [
     {
       name: "home",
@@ -37,7 +38,16 @@ const router = createRouter({
       path: "/",
       redirect: "/home",
     },
+    {
+      name: "detail",
+      path: "/detail/:skuid",
+      component: Detail,
+    },
   ],
+  scrollBehavior(to, from, savedPosition) {
+    // always scroll to top
+    return { top: 0 }
+  },
 })
 
 export default router

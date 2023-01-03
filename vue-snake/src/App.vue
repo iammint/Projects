@@ -1,16 +1,54 @@
 <template>
   <div id="main">
     <!-- 设置游戏的舞台 -->
-    <stage ref="stageComp"></stage>
+    <stage ref="stageComp" @clear="clearInter"></stage>
     <!-- 设置游戏的积分牌 -->
-    <scorePanel></scorePanel>
+    <scorePanel ref="scoreComp"></scorePanel>
   </div>
 </template>
 
 <script setup lang="ts">
 import stage from "./components/stage.vue"
 import scorePanel from "./components/scorePanel.vue"
-import { ref, onMounted, watch } from "vue"
+import { ref, onMounted } from "vue"
+
+// 获取子组件scoreComp的数据
+const scoreComp = ref<scoreData | null>(null)
+
+// 获取子组件stageComp的方法
+const stageComp = ref<stageMethod | null>(null)
+// 控制蛇移动的方法
+function run() {
+  // 由direction的值来决定移动方向
+  // 向上 top减小， 向下 top增大
+  // 向左 left减小， 向右 left增大
+  // 获取stageComp的方法
+
+  let changeX = stageComp.value!.setHeadX
+  let changeY = stageComp.value!.setHeadY
+
+  let X = stageComp.value!.getHeadX()
+  let Y = stageComp.value!.getHeadY()
+
+  switch (direction) {
+    case "ArrowUp":
+      changeY(Y - 10)
+      break
+
+    case "ArrowDown":
+      changeY(Y + 10)
+      break
+
+    case "ArrowLeft":
+      changeX(X - 10)
+      break
+
+    case "ArrowRight":
+      changeX(X + 10)
+      break
+  }
+  checkFood(X, Y)
+}
 // 储存方向的变量
 const directionKeyName = [
   "ArrowUp",
@@ -28,57 +66,36 @@ function KeyboardCb(event: KeyboardEvent) {
     return
   }
   direction = event.key
-  console.log(direction)
+  // 键盘事件触发run函数
+  run()
 }
 
 function isLegalKey(key: string): key is Direction {
   return directionKeyName.includes(key as Direction)
 }
-
+// 蛇自己移动
+let timer: ReturnType<typeof setInterval>
 onMounted(() => {
   document.addEventListener("keyup", KeyboardCb)
+  if (stageComp.value!.isAlive) {
+    timer = setInterval(run, 300 - scoreComp.value!.level * 30)
+  }
 })
-
-type methodListWithoutArg = "getHeadX" | "getHeadY"
-type methodListWithArg = "setHeadX" | "setHeadY"
-type stageMethod = {
-  [k in methodListWithArg]: (value: number) => void
-} & {
-  [k in methodListWithoutArg]: () => void
+function clearInter() {
+  clearInterval(timer)
 }
-const stageComp = ref<stageMethod | null>(null)
-// 控制蛇移动的方法
-function run() {
-  // 由direction的值来决定移动方向
-  // 向上 top减小， 向下 top增大
-  // 向左 left减小， 向右 left增大
 
-  // 获取蛇的位置
-  if (stageComp.value) {
-    let changeX = stageComp.value.setHeadX
-    let changeY = stageComp.value.setHeadY
-
-    switch (direction) {
-      case "ArrowUp":
-        changeY(-10)
-        break
-
-      case "ArrowDown":
-        changeY(10)
-        break
-
-      case "ArrowLeft":
-        changeX(-10)
-        break
-
-      case "ArrowRight":
-        changeX(10)
-        break
-    }
+// 检查蛇是否吃到了食物
+// 如果吃到了食物，食物位置改变，增加身体，增加分数
+function checkFood(X: number, Y: number) {
+  let foodX = stageComp.value!.getFoodX()
+  let foodY = stageComp.value!.getFoodY()
+  if (X === foodX && Y === foodY) {
+    stageComp.value!.changeFoodPos()
+    scoreComp.value!.addScore()
+    stageComp.value!.addBody()
   }
 }
-
-watch()
 </script>
 
 <style lang="less">
@@ -90,10 +107,6 @@ watch()
   box-sizing: border-box;
 }
 
-body {
-  font: bold 20px "Courier";
-}
-
 // 设置主窗口的样式
 #main {
   font: bold 20px "Courier";
@@ -101,7 +114,7 @@ body {
   height: 420px;
   background-color: @bg-color;
   // 设置main容器居中
-  margin: 100px auto;
+  margin: 50px auto;
   border: 10px solid black;
   border-radius: 30px;
   // 设置main内的子容器居中

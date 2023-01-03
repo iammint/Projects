@@ -31,6 +31,7 @@ function levelUp() {
     level.value++
   }
 }
+defineExpose({ score, level, addScore })
 </script>
 
 <style scoped lang="less">

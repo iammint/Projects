@@ -41,8 +41,6 @@ const snake = ref<HTMLElement | null>(null)
 // 获取蛇头元素
 const snakeHead = ref<HTMLElement | null>(null)
 // 通过蛇的后代元素获取蛇的身体（身体是随着分数的获得逐渐增加的，身体也包括头部）
-// created生命周期
-// const snakeBody = snake.value!.childrens
 
 // 获取蛇头的坐标
 function getHeadX() {
@@ -57,10 +55,13 @@ const emit = defineEmits(["clear"])
 function setHeadX(value: number) {
   if (snakeHead.value) {
     if (value < 0 || value > 294) {
-      isAlive = false
-      // 撞墙后清除interval，否则还会一直调run
-      emit("clear")
-      alert("Game Over!")
+      gameOver()
+    } else if (
+      // 水平方向掉头
+      snake.value!.children[2] &&
+      (snake.value!.children[2] as HTMLElement).offsetLeft === value
+    ) {
+      gameOver()
     } else {
       snakeHead.value.style.left = value + "px"
       // 只要蛇头动，身体就要跟着动
@@ -71,14 +72,24 @@ function setHeadX(value: number) {
 function setHeadY(value: number) {
   if (snakeHead.value) {
     if (value < 0 || value > 294) {
-      isAlive = false
-      emit("clear")
-      alert("Game Over!")
+      gameOver()
+    } else if (
+      // 竖直方向掉头
+      snake.value!.children[2] &&
+      (snake.value!.children[2] as HTMLElement).offsetTop === value
+    ) {
+      gameOver()
     } else {
       snakeHead.value.style.top = value + "px"
       moveBody()
     }
   }
+}
+function gameOver() {
+  isAlive = false
+  // 撞墙后清除interval，否则还会一直调run
+  emit("clear")
+  alert("Game Over!")
 }
 
 // 得分后添加身体

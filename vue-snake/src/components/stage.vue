@@ -84,6 +84,8 @@ function setHeadY(value: number) {
 // 得分后添加身体
 function addBody() {
   snake.value!.insertAdjacentHTML("beforeend", "<div></div>")
+  // 添加完身体立刻移动
+  moveBody()
 }
 
 // 蛇身体移动

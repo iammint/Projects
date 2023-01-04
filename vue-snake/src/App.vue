@@ -17,6 +17,7 @@ const scoreComp = ref<scoreData | null>(null)
 
 // 获取子组件stageComp的方法
 const stageComp = ref<stageMethod | null>(null)
+
 // 控制蛇移动的方法
 function run() {
   // 由direction的值来决定移动方向
@@ -27,8 +28,11 @@ function run() {
   let changeX = stageComp.value!.setHeadX
   let changeY = stageComp.value!.setHeadY
 
-  let X = stageComp.value!.getHeadX()
-  let Y = stageComp.value!.getHeadY()
+  let getX = stageComp.value!.getHeadX
+  let getY = stageComp.value!.getHeadY
+
+  let X = getX()
+  let Y = getY()
 
   switch (direction) {
     case "ArrowUp":
@@ -47,7 +51,10 @@ function run() {
       changeX(X + 10)
       break
   }
-  checkFood(X, Y)
+
+  let newX = getX()
+  let newY = getY()
+  checkFood(newX, newY)
 }
 // 储存方向的变量
 const directionKeyName = [
@@ -78,7 +85,7 @@ let timer: ReturnType<typeof setInterval>
 onMounted(() => {
   document.addEventListener("keyup", KeyboardCb)
   if (stageComp.value!.isAlive) {
-    timer = setInterval(run, 300 - scoreComp.value!.level * 30)
+    timer = setInterval(run, 300 - scoreComp.value!.level * 50)
   }
 })
 function clearInter() {

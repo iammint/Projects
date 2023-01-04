@@ -66,6 +66,8 @@ function setHeadX(value: number) {
       snakeHead.value.style.left = value + "px"
       // 只要蛇头动，身体就要跟着动
       moveBody()
+      // 检查是否撞到身体
+      // headTouchBody()
     }
   }
 }
@@ -82,6 +84,8 @@ function setHeadY(value: number) {
     } else {
       snakeHead.value.style.top = value + "px"
       moveBody()
+      // 检查是否撞到身体
+      // headTouchBody()
     }
   }
 }
@@ -112,6 +116,17 @@ function moveBody() {
     ;(snakeBody![i] as HTMLElement).style.top = frontY + "px"
   }
 }
+
+// 检查是否撞到身体
+// function headTouchBody() {
+//   let snakeBody = snake.value!.children
+//   for (let i = 1; i < snakeBody.length - 1; i++) {
+//     let body = snakeBody[i] as HTMLElement
+//     if (getHeadX() === body.offsetLeft && getHeadY() === body.offsetTop) {
+//       gameOver()
+//     }
+//   }
+// }
 
 defineExpose({
   getHeadX,
